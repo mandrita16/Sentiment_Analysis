@@ -143,7 +143,7 @@ The compound score is normalized to a range between -1 and +1.
 ### 5. Classification Logic
 
 Sentiment Studio uses the following threshold-based classification:
-
+```bash
 \[
 S =
 \begin{cases}
@@ -152,7 +152,7 @@ Negative & C \leq -0.05\\
 Neutral & -0.05 < C < 0.05
 \end{cases}
 \]
-
+```
 Where \(C\) represents the VADER compound score.
 
 ### 6. Visualization and Reporting
@@ -168,16 +168,16 @@ Plotly converts the numerical results into interactive visualizations, while the
 VADER calculates a normalized compound sentiment score using the sentiment valence values and linguistic adjustments.
 
 A simplified representation of the normalization step is:
-
+```bash
 \[
 Compound = \frac{x}{\sqrt{x^2+\alpha}}
 \]
-
+```
 Where:
-
+```bash
 - \(x\) = Sum of sentiment valence values after applicable rule-based adjustments.
 - \(\alpha\) = Normalization constant (15 in VADER).
-
+```
 The compound score represents overall sentiment polarity, not the probability that a classification is correct.
 
 ---
@@ -261,6 +261,11 @@ SentimentStudio/
 | `requirements.txt` | Python dependencies |
 
 ---
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/ac4e380c-11ff-4092-bb5b-5e03247d189f" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/714ca82a-6a08-4b81-9add-65a4424a9062" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/818e0eab-c0b0-436b-867d-831d417f1277" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/2f2956b2-0456-40f2-94bc-41f3a4619e08" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/f529a8ef-eb86-4f97-a594-d57c48cf646f" />
 
 ## Installation and Setup
 
