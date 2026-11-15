@@ -1,0 +1,586 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1120">
+
+    <title>Sentiment Studio | AI Text Analytics</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Plotly visualization library -->
+    <script src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">⌾</div>
+            <div>
+                <h2>Sentiment<span>Studio</span></h2>
+                <small>TEXT INTELLIGENCE</small>
+            </div>
+        </div>
+
+        <div class="sidebar-label">WORKSPACE</div>
+
+        <nav class="sidebar-nav">
+            <a href="#dashboard" class="nav-item active">
+                <span>◈</span> Dashboard
+            </a>
+
+            <a href="#analyzer" class="nav-item">
+                <span>⌕</span> Text Analyzer
+            </a>
+
+            <a href="#batch" class="nav-item">
+                <span>▤</span> Batch Analysis
+            </a>
+
+            <a href="#analytics" class="nav-item">
+                <span>◉</span> Visual Analytics
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-status">
+                <span class="status-dot"></span>
+                Analysis Engine Online
+            </div>
+
+            <div class="sidebar-footer">
+                <span>POWERED BY</span>
+                <strong>VADER NLP</strong>
+            </div>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="dashboard">
+
+        <!-- TOPBAR -->
+        <header class="topbar">
+
+            <div>
+                <div class="breadcrumb">Workspace / Dashboard</div>
+                <h1>Sentiment Dashboard</h1>
+            </div>
+
+            <div class="topbar-right">
+                <div class="engine-status">
+                    <span class="status-dot"></span>
+                    System Operational
+                </div>
+
+                <div class="avatar">SS</div>
+            </div>
+
+        </header>
+
+
+        <!-- HERO -->
+        <section class="hero-section">
+
+            <div class="hero-content">
+                <span class="eyebrow">NATURAL LANGUAGE PROCESSING</span>
+
+                <h2>Understand the emotion<br>behind every <span>word.</span></h2>
+
+                <p>
+                    Analyze text, identify emotional polarity, and transform
+                    unstructured language into meaningful insights with
+                    real-time sentiment intelligence.
+                </p>
+
+                <a href="#analyzer" class="primary-link">
+                    Start Analyzing <span>→</span>
+                </a>
+            </div>
+
+            <div class="hero-decoration">
+                <div class="orb orb-one"></div>
+                <div class="orb orb-two"></div>
+                <div class="hero-symbol">S.</div>
+                <div class="hero-caption">LANGUAGE · EMOTION · INSIGHT</div>
+            </div>
+
+        </section>
+
+
+        <!-- OVERVIEW CARDS -->
+        <section class="overview-grid">
+
+            <div class="overview-card">
+                <div class="overview-top">
+                    <span>Analysis Engine</span>
+                    <span class="overview-icon">◈</span>
+                </div>
+                <h3>VADER NLP</h3>
+                <p>Lexicon and rule-based sentiment analysis</p>
+            </div>
+
+            <div class="overview-card">
+                <div class="overview-top">
+                    <span>Sentiment Classes</span>
+                    <span class="overview-icon">◎</span>
+                </div>
+                <h3>03 Classes</h3>
+                <p>Positive · Negative · Neutral</p>
+            </div>
+
+            <div class="overview-card">
+                <div class="overview-top">
+                    <span>Batch Processing</span>
+                    <span class="overview-icon">▤</span>
+                </div>
+                <h3>100 Texts</h3>
+                <p>Maximum entries per batch request</p>
+            </div>
+
+        </section>
+
+
+        <!-- SINGLE TEXT ANALYZER -->
+        <section class="content-section" id="analyzer">
+
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">01 / TEXT INTELLIGENCE</span>
+                    <h2>Analyze Your Text</h2>
+                    <p>Enter a sentence, review, comment, or paragraph.</p>
+                </div>
+
+                <span class="section-tag">SINGLE ANALYSIS</span>
+            </div>
+
+
+            <div class="analyzer-card">
+
+                <div class="input-header">
+                    <label for="textInput">YOUR TEXT</label>
+
+                    <span id="charCount">0 / 10000 characters</span>
+                </div>
+
+                <textarea
+                    id="textInput"
+                    maxlength="10000"
+                    placeholder="Type or paste your text here...
+
+Example: I absolutely love this product! The quality is amazing and the experience has been wonderful."
+                ></textarea>
+
+
+                <div class="input-bottom">
+
+                    <div class="sample-buttons">
+                        <span>Try a sample:</span>
+
+                        <button class="sample-btn" data-sample="positive">
+                            Positive
+                        </button>
+
+                        <button class="sample-btn" data-sample="negative">
+                            Negative
+                        </button>
+
+                        <button class="sample-btn" data-sample="neutral">
+                            Neutral
+                        </button>
+                    </div>
+
+                    <button id="analyzeBtn" class="analyze-btn">
+                        Analyze Sentiment <span>→</span>
+                    </button>
+
+                </div>
+
+                <div id="errorMessage" class="error-message hidden"></div>
+
+            </div>
+
+        </section>
+
+
+        <!-- RESULTS SECTION -->
+        <section id="results" class="content-section hidden">
+
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">02 / ANALYSIS OUTPUT</span>
+                    <h2>Analysis Results</h2>
+                    <p>Your text has been processed successfully.</p>
+                </div>
+
+                <span class="section-tag">RESULT GENERATED</span>
+            </div>
+
+
+            <!-- RESULT SUMMARY -->
+            <div class="result-grid">
+
+                <div class="result-card sentiment-result">
+
+                    <span class="result-label">DETECTED SENTIMENT</span>
+
+                    <div id="sentimentIcon" class="sentiment-icon">◎</div>
+
+                    <h2 id="sentimentLabel">Neutral</h2>
+
+                    <p id="sentimentDescription">
+                        Your text has been evaluated.
+                    </p>
+
+                </div>
+
+
+                <div class="result-card">
+
+                    <span class="result-label">COMPOUND SCORE</span>
+
+                    <h2 id="compoundScore">0.0000</h2>
+
+                    <p>Normalized polarity score</p>
+
+                    <div class="score-track">
+                        <div id="compoundBar" class="score-fill"></div>
+                    </div>
+
+                    <div class="score-scale">
+                        <span>-1.0 Negative</span>
+                        <span>+1.0 Positive</span>
+                    </div>
+
+                </div>
+
+
+                <div class="result-card">
+
+                    <span class="result-label">TEXT STATISTICS</span>
+
+                    <div class="stats-grid">
+
+                        <div>
+                            <h2 id="wordCount">0</h2>
+                            <span>Words</span>
+                        </div>
+
+                        <div>
+                            <h2 id="sentenceCount">0</h2>
+                            <span>Sentences</span>
+                        </div>
+
+                        <div>
+                            <h2 id="characterCount">0</h2>
+                            <span>Characters</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SENTIMENT SCORE BREAKDOWN -->
+            <div class="score-breakdown">
+
+                <div class="breakdown-heading">
+                    <div>
+                        <h3>Sentiment Score Breakdown</h3>
+                        <p>Lexical sentiment proportions calculated by VADER.</p>
+                    </div>
+                </div>
+
+
+                <div class="breakdown-item">
+
+                    <div class="breakdown-label">
+                        <span>Positive</span>
+                        <strong id="positiveValue">0%</strong>
+                    </div>
+
+                    <div class="breakdown-track">
+                        <div id="positiveBar" class="breakdown-fill positive-fill"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="breakdown-item">
+
+                    <div class="breakdown-label">
+                        <span>Negative</span>
+                        <strong id="negativeValue">0%</strong>
+                    </div>
+
+                    <div class="breakdown-track">
+                        <div id="negativeBar" class="breakdown-fill negative-fill"></div>
+                    </div>
+
+                </div>
+
+
+                <div class="breakdown-item">
+
+                    <div class="breakdown-label">
+                        <span>Neutral</span>
+                        <strong id="neutralValue">0%</strong>
+                    </div>
+
+                    <div class="breakdown-track">
+                        <div id="neutralBar" class="breakdown-fill neutral-fill"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- PLOTLY ANALYTICS -->
+            <section class="analytics-section" id="analytics">
+
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">03 / VISUAL INTELLIGENCE</span>
+                        <h2>Sentiment Visualizations</h2>
+                        <p>Explore the sentiment distribution through interactive charts.</p>
+                    </div>
+
+                    <span class="section-tag">PLOTLY ANALYTICS</span>
+                </div>
+
+
+                <div class="plot-grid">
+
+                    <!-- RADAR CHART -->
+                    <div class="plot-card">
+
+                        <div class="plot-heading">
+                            <div>
+                                <h4>Sentiment Radar</h4>
+                                <p>Compare positive, negative and neutral proportions.</p>
+                            </div>
+
+                            <span class="chart-icon">✳</span>
+                        </div>
+
+                        <div id="radarChart"></div>
+
+                    </div>
+
+
+                    <!-- DOUGHNUT CHART -->
+                    <div class="plot-card">
+
+                        <div class="plot-heading">
+                            <div>
+                                <h4>Sentiment Distribution</h4>
+                                <p>Visual breakdown of emotional polarity.</p>
+                            </div>
+
+                            <span class="chart-icon">◉</span>
+                        </div>
+
+                        <div id="donutChart"></div>
+
+                    </div>
+
+
+                    <!-- GAUGE CHART -->
+                    <div class="plot-card gauge-card">
+
+                        <div class="plot-heading">
+                            <div>
+                                <h4>Compound Sentiment Gauge</h4>
+                                <p>Overall sentiment polarity on a scale from -1 to +1.</p>
+                            </div>
+
+                            <span class="chart-icon">◌</span>
+                        </div>
+
+                        <div id="gaugeChart"></div>
+
+                    </div>
+
+                </div>
+
+                <div class="chart-note">
+                    <strong>Understanding the charts:</strong>
+                    Positive, negative and neutral values represent lexical
+                    proportions. The compound score is a normalized sentiment
+                    score ranging from -1 to +1. These are different measurements,
+                    so the compound score is displayed separately in the gauge.
+                </div>
+
+            </section>
+
+
+            <!-- EXPORT -->
+            <div class="export-section">
+
+                <div>
+                    <h3>Export Your Analysis</h3>
+                    <p>Save the generated report for future reference.</p>
+                </div>
+
+                <div class="export-buttons">
+
+                    <button id="exportJsonBtn" class="export-btn">
+                        ↓ Export JSON
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- BATCH ANALYSIS -->
+        <section class="content-section" id="batch">
+
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">04 / BULK PROCESSING</span>
+                    <h2>Batch Analysis</h2>
+                    <p>Analyze multiple texts simultaneously.</p>
+                </div>
+
+                <span class="section-tag">UP TO 100 TEXTS</span>
+            </div>
+
+
+            <div class="analyzer-card">
+
+                <div class="input-header">
+                    <label for="batchInput">ENTER MULTIPLE TEXTS</label>
+                    <span>One text per line</span>
+                </div>
+
+                <textarea
+                    id="batchInput"
+                    placeholder="I love this application.
+The service was terrible.
+The product arrived yesterday.
+The experience was amazing."
+                ></textarea>
+
+                <div class="input-bottom">
+
+                    <span class="batch-hint">
+                        Each non-empty line will be analyzed separately.
+                    </span>
+
+                    <button id="batchAnalyzeBtn" class="analyze-btn">
+                        Run Batch Analysis <span>→</span>
+                    </button>
+
+                </div>
+
+                <div id="batchErrorMessage" class="error-message hidden"></div>
+
+            </div>
+
+
+            <!-- BATCH RESULTS -->
+            <div id="batchResults" class="batch-results hidden">
+
+                <div class="batch-summary">
+
+                    <div>
+                        <span>Total Texts</span>
+                        <h3 id="batchTotal">0</h3>
+                    </div>
+
+                    <div>
+                        <span>Positive</span>
+                        <h3 id="batchPositive">0</h3>
+                    </div>
+
+                    <div>
+                        <span>Negative</span>
+                        <h3 id="batchNegative">0</h3>
+                    </div>
+
+                    <div>
+                        <span>Neutral</span>
+                        <h3 id="batchNeutral">0</h3>
+                    </div>
+
+                </div>
+
+
+                <div class="table-container">
+
+                    <div class="table-heading">
+                        <div>
+                            <h3>Individual Results</h3>
+                            <p>Sentiment classification for each entry.</p>
+                        </div>
+
+                        <button id="exportCsvBtn" class="export-btn">
+                            ↓ Export CSV
+                        </button>
+                    </div>
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>TEXT</th>
+                                <th>SENTIMENT</th>
+                                <th>COMPOUND SCORE</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="batchTableBody"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer class="main-footer">
+
+            <div>
+                <strong>Sentiment Studio</strong>
+                <span>Turning language into insights.</span>
+            </div>
+
+            <p>
+                Built with Python · Flask · VADER · Plotly
+            </p>
+
+        </footer>
+
+    </main>
+
+</div>
+
+
+<!-- APPLICATION JAVASCRIPT -->
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>
